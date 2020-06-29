@@ -1,0 +1,108 @@
+
+<div class="toolbar" role="banner">
+  <div class="toolbar-content">
+    <img width="60" alt="Lyrics Search" src="../assets/logo.png"/>
+    <span>{{lan_selected_dict['page-header']}}</span>
+    <div class="spacer"></div>
+    <button (click)="toggleLanguage()" type="button" class="btn btn-success action-btn-left toggle-lan">Try English</button>
+  </div>
+</div>
+
+<div class="main-container row">
+  <div class="content col-8" role="main">
+    
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" id="basic_search_query" placeholder="{{lan_selected_dict['basic-input-placeholder']}}" aria-label="Search Lyrics" aria-describedby="basic-addon2">
+          <div class="input-group-append">
+            <button class="btn btn-primary" type="button" (click)="lyricSearch()">{{lan_selected_dict['button']}}</button>
+          </div>
+        </div>
+
+    <div class="card text-white bg-secondary mb-3" style="width: 100%;" *ngFor="let lyric of filteredLyrics">
+      <div class="card-header">{{lyric.songName}}</div>
+
+      <div class="card-body">
+        <p class="custom-list list-label">ගායකයා (Artist)&nbsp;&nbsp;&nbsp;&nbsp;: </p><p class="custom-list" *ngFor="let artist of lyric.artist">{{artist}}</p>
+        <br/>
+        
+        <p class="custom-list list-label">පද රචනය (Lyrics)&nbsp;: </p><p class="custom-list" *ngFor="let lyricWriter of lyric.lyricWriter">{{lyricWriter}}</p>
+        <br/>
+        
+        <p class="custom-list list-label">සංගීතය (Music)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </p><p class="custom-list" *ngFor="let musicDirector of lyric.musicDirector">{{musicDirector}}</p>
+        <br/>
+        
+        <p class="custom-list list-label">
+          Key
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 
+        </p><p class="custom-list">{{lyric.key}}</p>
+        <br/>
+        
+        <p class="custom-list list-label">
+          තාලය
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 
+        </p><p class="custom-list">{{lyric.beat}}</p>
+        <br/>
+
+        <span class="badge badge-primary" *ngFor="let genre of lyric.genre">{{genre}}</span>
+        <br/>
+
+        <p class="lyric-content">{{lyric.lyric}}</p>
+
+        <p class="custom-list list-label">Views: <span class="vs-span">{{lyric.views}}</span></p>
+        <p class="custom-list list-label">Shares: <span class="vs-span">{{lyric.shares}}</span></p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="col-4">
+    <div class="right-comp-cont card text-primary mb-3" *ngIf="aggs_artist.length != 0">
+      <div class="card-header">Filtered By Artist</div>
+      <div class="agg-cont" style="width: 100%;" *ngFor="let element of aggs_artist">
+        <a class="agg-element" *ngIf="element[0] != ''" (click)="filterResults('artist', element[0])">{{element[0]}} ({{element[1]}})</a>
+      </div>
+    </div>
+    <div class="right-comp-cont card text-primary mb-3" *ngIf="aggs_lyric_wrt.length != 0">
+      <div class="card-header">Filtered By Lyric Writer</div>
+      <div class="agg-cont" style="width: 100%;" *ngFor="let element of aggs_lyric_wrt">
+        <a class="agg-element" *ngIf="element[0] != ''" (click)="filterResults('lyric_wrt', element[0])">{{element[0]}} ({{element[1]}})</a>
+      </div>
+    </div>
+    <div class="right-comp-cont card text-primary mb-3" *ngIf="aggs_genre.length != 0">
+      <div class="card-header">Filtered By Genre</div>
+      <div class="agg-cont" style="width: 100%;" *ngFor="let element of aggs_genre">
+        <a class="agg-element" *ngIf="element[0] != ''" (click)="filterResults('genre', element[0])">{{element[0]}} ({{element[1]}})</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="loading-container" *ngIf="search_pressed">
+  <div class="spinner-border" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+
+<div class="error-container" *ngIf="error_present">
+  <div class="alert alert-danger" role="alert">
+    {{lan_selected_dict['error-message']}}
+  </div>
+</div>
+
+<div class="empty-container" *ngIf="no_result">
+  <div class="alert alert-secondary" role="alert">
+    {{lan_selected_dict['no-result-message']}}
+  </div>
+</div>
+
+
+<footer class="page-footer font-small blue">
+
+<div class="footer-copyright text-center py-3">© 2020 Copyright:
+   Gaya Sri 
+</div>
+
+</footer>
